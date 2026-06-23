@@ -263,7 +263,7 @@
      ========================================================= */
   const SECTIONS = [
     { id: "nature", zh: "自然", en: "Nature",   photos: ["images/nature_001.JPG", "images/nature_002.JPG"] },
-    { id: "flower", zh: "繁花", en: "Flowers",  photos: ["images/flower_001.JPG", "images/flower_002.JPG", "images/flower_003.JPG", "images/flower_004.JPG", "images/flower_005.JPG"] },
+    { id: "flower", zh: "繁花", en: "Flowers",  photos: ["images/flower_001.JPG", "images/flower_002.JPG", "images/flower_003.JPG", "images/flower_004.JPG"] },
     { id: "city",   zh: "城市", en: "City",     photos: ["images/city_001.JPG", "images/city_002.JPG", "images/city_003.JPG"] },
     { id: "animal", zh: "小动物", en: "Animals",  photos: ["images/animal_001.JPG"] },
     { id: "food",   zh: "美食",   en: "Homemade", photos: ["images/food_001.JPG", "images/food_002.JPG"] },
@@ -414,6 +414,26 @@
     });
   }, { rootMargin: "-45% 0px -45% 0px" });
   SECTIONS.forEach(sec => obs.observe(document.getElementById(sec.id)));
+
+  /* 始终从顶部进入；导航平滑滚动但不在地址栏留下 #（避免刷新跳到中间） */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener("click", e => {
+      e.preventDefault();
+      const id = a.getAttribute("href").slice(1);
+      if (id === "top") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+      history.replaceState(null, "", location.pathname + location.search);
+    });
+  });
+
+  window.addEventListener("load", () => window.scrollTo(0, 0));
 </script>
 </body>
 </html>
