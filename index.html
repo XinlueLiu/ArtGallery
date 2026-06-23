@@ -6,7 +6,18 @@
   <title>流光拾影 — 摄影作品</title>
   <meta name="description" content="一处安静的线上影像馆 —— 自然、繁花、城市、生灵与家味。" />
   <style>
-    /* 仅使用系统字体，不加载任何 Google 字体（在中国大陆被屏蔽）。 */
+    /* 标题用楷体：霞鹜文楷(LXGW WenKai, OFL)的子集，自托管在本仓库 fonts/，
+       只保留所需字形（约 12KB，分多个小文件，按需加载），在中国也能快速显示，
+       且在 iPhone / Android 上都能正确呈现楷体。
+       正文继续使用系统字体，不加载任何 Google 字体（在中国大陆被屏蔽）。 */
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-0.woff2') format('woff2');unicode-range:U+62FE;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-1.woff2') format('woff2');unicode-range:U+6EDA;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-2.woff2') format('woff2');unicode-range:U+5218,U+7E41;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-3.woff2') format('woff2');unicode-range:U+6444;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-4.woff2') format('woff2');unicode-range:U+5411,U+5F20,U+7167,U+98DF;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-5.woff2') format('woff2');unicode-range:U+5149,U+57CE,U+5F71,U+6D41,U+7136,U+7B2C,U+82B1;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-6.woff2') format('woff2');unicode-range:U+4E0A,U+4E0B,U+4F5C,U+52A8,U+54C1,U+5C0F,U+5E02,U+7247,U+7269,U+7F8E,U+81EA;}
+    @font-face{font-family:'KaiWeb';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/kai-7.woff2') format('woff2');unicode-range:U+4E00;}
     :root {
       --bg: #ffffff;
       --text: #1a1a1a;
@@ -16,7 +27,7 @@
       --sans: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
               -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --serif: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
-      --title: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif;
+      --title: "KaiWeb", "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif;
       --bar: 56px;
     }
 
@@ -278,7 +289,7 @@
 
     const head = document.createElement("div");
     head.className = "section-head";
-    head.innerHTML = "<h2>" + sec.zh + "</h2><span class='en'>" + sec.en + "</span>";
+    head.innerHTML = "<h2>" + sec.zh + "</h2>";
     section.appendChild(head);
 
     section.appendChild(buildCarousel(sec));
