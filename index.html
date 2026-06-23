@@ -1,470 +1,369 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ramesh Zende — A Return to Painting</title>
-  <meta name="description" content="A quiet online gallery documenting a return to painting at sixty, a diary of works, teaching, and a dream of one day exhibiting somewhere in the world." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>流光拾影 — 摄影作品</title>
+  <meta name="description" content="一处安静的线上影像馆 —— 自然、繁花、城市、生灵与家味。" />
   <style>
+    /* 仅使用系统字体，不加载任何 Google 字体（在中国大陆被屏蔽）。 */
     :root {
       --bg: #ffffff;
-      --text: #0b0b0b;
-      --muted: #9a9a9a;
-      --soft: #e9e9e9;
-      --line: #dcdcdc;
-      --max: 1120px;
+      --text: #1a1a1a;
+      --muted: #b0aca4;
+      --line: #ececec;
+      --dot: #d8d4cc;
+      --sans: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
+              -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
+      --bar: 56px;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--bar); }
     body {
-      margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 14px;
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
       line-height: 1.6;
-      letter-spacing: -0.01em;
     }
+    img { display: block; }
 
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    header {
+    /* ---------- 顶部导航 ---------- */
+    .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 10;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(16px);
-      padding: 28px 38px;
-      display: grid;
-      grid-template-columns: 1fr auto auto 1fr;
+      top: 0; left: 0; width: 100%;
+      height: var(--bar);
+      z-index: 20;
+      display: flex;
       align-items: center;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 22px;
+      padding-top: env(safe-area-inset-top);
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
     }
+    .brand {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-indent: 0.24em;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .sectnav {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sectnav::-webkit-scrollbar { display: none; }
+    .sectnav a {
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-indent: 0.14em;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 9px;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .sectnav a.active, .sectnav a:hover { color: var(--text); }
 
-    .brand { justify-self: start; }
-    .center-title { justify-self: center; color: var(--muted); }
-    .center-title strong { color: var(--text); }
-    .top-socials { justify-self: end; display: flex; gap: 14px; margin-right: 26px; color: var(--muted); }
-    .top-socials a { font-size: 11px; }
-    .top-socials a:hover { color: var(--text); }
-    nav { justify-self: end; display: flex; gap: 6px; }
-    nav a::before { content: "[ "; color: var(--muted); }
-    nav a::after { content: " ]"; color: var(--muted); }
-    nav a { white-space: nowrap; }
-    nav a:hover { color: var(--muted); }
-
-    main { padding-top: 92px; }
-    .gallery-room {
-      min-height: 100vh;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 64px 38px 96px;
+    /* ---------- 开篇 ---------- */
+    .intro {
+      height: 58vh;
+      min-height: 320px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero {
       align-items: center;
+      justify-content: center;
       text-align: center;
+      padding: var(--bar) 24px 0;
     }
-
-    .kicker {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 18px;
-    }
-
-    h1, h2, h3 {
-      margin: 0;
+    .intro .big {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4.6vw, 38px);
       font-weight: 500;
-      letter-spacing: -0.055em;
+      letter-spacing: 0.36em;
+      text-indent: 0.36em;
     }
-
-    h1 {
-      font-size: clamp(44px, 7vw, 96px);
-      line-height: 0.95;
-      max-width: 900px;
-    }
-
-    h2 {
-      font-size: clamp(34px, 5vw, 72px);
-      line-height: 1;
-      margin-bottom: 38px;
-    }
-
-    h3 {
-      font-size: 17px;
-      margin-top: 20px;
-      margin-bottom: 2px;
-    }
-
-    .lead {
-      max-width: 590px;
-      margin: 38px auto 0;
-      color: #333;
-      font-size: clamp(17px, 2vw, 22px);
-      line-height: 1.55;
-      letter-spacing: -0.035em;
-    }
-
-    .quiet-note {
-      color: var(--muted);
-      font-size: 12px;
+    .intro .sub {
+      margin-top: 16px;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-indent: 0.4em;
       text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      margin-top: 52px;
+      color: var(--muted);
+    }
+    .intro .hint {
+      margin-top: 42px;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* ---------- 分区 ---------- */
+    .section { padding: 26px 0 44px; border-top: 1px solid var(--line); }
+    .section-head {
+      text-align: center;
+      margin-bottom: 18px;
+      padding: 0 24px;
+    }
+    .section-head h2 {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+    }
+    .section-head .en {
+      display: block;
+      margin-top: 6px;
+      font-size: 10px;
+      letter-spacing: 0.36em;
+      text-indent: 0.36em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
-    .art-frame {
-      width: min(860px, 100%);
-      aspect-ratio: 4 / 3;
-      margin: 0 auto;
-      background:
-        linear-gradient(135deg, rgba(0,0,0,.06), transparent 34%),
-        linear-gradient(45deg, #e8e5de, #f9f8f4 45%, #d7d2c9);
+    /* ---------- 轮播（一次一张，左右滑动） ---------- */
+    .stage { position: relative; }
+    .carousel {
+      height: 80vh;
+      min-height: 380px;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      touch-action: pan-x;
+    }
+    .carousel::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 100%;
+      height: 100%;
+      scroll-snap-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #777;
-      font-family: "Libre Baskerville", serif;
-      font-size: clamp(20px, 3vw, 38px);
-      text-align: center;
+      padding: 0 16px;
     }
+    .slide img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto; height: auto;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .slide img.loaded { opacity: 1; }
 
-    .art-frame.tall { aspect-ratio: 3 / 4; width: min(620px, 100%); }
-    .art-frame.wide { aspect-ratio: 16 / 10; }
-    .art-frame.dark {
-      background:
-        radial-gradient(circle at 70% 35%, rgba(255,255,255,.18), transparent 24%),
-        linear-gradient(135deg, #222, #565656 54%, #d8d0c4);
-      color: #eee;
-    }
-    .art-frame.warm {
-      background:
-        radial-gradient(circle at 30% 45%, rgba(255,255,255,.55), transparent 20%),
-        linear-gradient(140deg, #d9b16f, #f3e9d3 42%, #8a775f);
-      color: #5c4b33;
-    }
-    .art-frame.blue {
-      background:
-        linear-gradient(140deg, #dfe7ea, #aebdc3 48%, #47535a);
-      color: #26333a;
-    }
-
-    .work-meta {
-      width: min(860px, 100%);
-      margin: 22px auto 0;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      font-size: 13px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .work-meta span { color: var(--muted); margin-left: 8px; }
-    .inquire { color: var(--muted); }
-    .inquire:hover { color: var(--text); }
-
-    .section-text {
-      max-width: 720px;
-      font-family: "Libre Baskerville", Georgia, serif;
-      font-size: clamp(21px, 3vw, 38px);
-      line-height: 1.55;
-      letter-spacing: -0.045em;
-    }
-    .section-text p { margin: 0 0 28px; }
-
-    .timeline {
-      max-width: 720px;
-      margin-top: 54px;
-      border-top: 1px solid var(--line);
-    }
-    .timeline-row {
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--line);
-      font-size: 14px;
-    }
-    .timeline-row span:first-child { color: var(--muted); }
-
-    .diary-entry {
-      max-width: 760px;
-      margin: 0 auto 120px;
-    }
-    .date {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 18px;
-    }
-    .diary-entry p {
-      font-family: "Libre Baskerville", Georgia, serif;
-      font-size: clamp(20px, 2.6vw, 30px);
-      line-height: 1.55;
-      letter-spacing: -0.04em;
-      margin: 0 0 28px;
-    }
-    .small-image {
-      width: min(620px, 100%);
-      aspect-ratio: 16 / 9;
-      background: linear-gradient(120deg, #f0f0f0, #d8d8d8, #fafafa);
-      margin-top: 30px;
-    }
-
-    .simple-list {
-      max-width: 720px;
-      border-top: 1px solid var(--line);
-      margin-top: 34px;
-    }
-    .simple-list a, .simple-list div {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--line);
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .simple-list span { color: var(--muted); font-weight: 500; }
-
-    .contact-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    form { max-width: 520px; }
-    input, textarea {
-      width: 100%;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      padding: 18px 0;
-      font: inherit;
-      outline: none;
-      background: transparent;
-    }
-    textarea { min-height: 120px; resize: vertical; }
-    button {
-      margin-top: 24px;
-      border: 1px solid var(--text);
-      background: var(--text);
-      color: white;
-      padding: 13px 22px;
-      font: inherit;
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-    button:hover { background: white; color: var(--text); }
-
-    .floating-socials {
-      position: fixed;
-      right: 34px;
+    .arrow {
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      z-index: 9;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: -0.02em;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.25s, background 0.2s;
+      z-index: 5;
     }
-    .floating-socials a:hover { color: var(--text); }
+    .stage:hover .arrow { opacity: 0.85; }
+    .arrow:hover { opacity: 1; background: #fff; }
+    .arrow.prev { left: 22px; }
+    .arrow.next { right: 22px; }
 
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 22px;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--dot);
+      border: none; padding: 0;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .dot.active { background: var(--text); transform: scale(1.25); }
+
+    /* ---------- 页脚 ---------- */
     footer {
-      padding: 34px 38px 46px;
-      display: flex;
-      justify-content: space-between;
-      gap: 28px;
-      flex-wrap: wrap;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
+      text-align: center;
+      padding: 48px 24px 60px;
+      padding-bottom: max(60px, env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.18em;
     }
-    .socials { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); }
-    .socials a:hover { color: var(--text); }
 
-    @media (max-width: 820px) {
-      header {
-        position: static;
-        grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 24px;
-      }
-      .center-title, nav, .top-socials { justify-self: start; }
-      .top-socials { margin-right: 0; flex-wrap: wrap; }
-      nav { flex-wrap: wrap; }
-      .floating-socials { display: none; }
-      main { padding-top: 0; }
-      .gallery-room { min-height: auto; padding: 74px 24px; }
-      .work-meta, .contact-grid { grid-template-columns: 1fr; gap: 28px; }
-      footer { padding: 28px 24px 38px; }
+    @media (hover: none) { .arrow { display: none; } }
+    @media (max-width: 600px) {
+      .brand { font-size: 15px; letter-spacing: 0.14em; }
+      .sectnav a { font-size: 12px; padding: 6px 6px; }
+      .carousel { height: 72vh; }
+      .slide { padding: 0 10px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <a class="brand" href="#home">RAMESH ZENDE</a>
-    <div class="center-title"><strong>RETURNING TO PAINTING</strong> AT SIXTY</div>
-    <div class="top-socials" aria-label="Social media links">
-      <a href="#" title="Instagram">IG</a>
-      <a href="#" title="Facebook">FB</a>
-      <a href="#" title="LinkedIn">IN</a>
-      <a href="#" title="TikTok">TT</a>
-      <a href="#" title="YouTube">YT</a>
-    </div>
-    <nav>
-      <a href="#works">WORKS</a>
-      <a href="#diary">DIARY</a>
-      <a href="#dream">DREAM</a>
-      <a href="#learn">LEARN</a>
-      <a href="#contact">CONTACT</a>
-    </nav>
+
+  <header class="topbar">
+    <a class="brand" href="#top">流光拾影</a>
+    <nav class="sectnav" id="sectnav"></nav>
   </header>
 
-  <aside class="floating-socials" aria-label="Social media links">
-    <a href="#">Instagram</a>
-    <a href="#">Facebook</a>
-    <a href="#">LinkedIn</a>
-    <a href="#">TikTok</a>
-    <a href="#">YouTube</a>
-  </aside>
+  <section class="intro" id="top">
+    <div class="big">流光拾影</div>
+    <div class="sub">摄影作品 · 刘</div>
+    <div class="hint">向下滚动 ↓</div>
+  </section>
 
-  <main>
-    <section id="home" class="gallery-room hero">
-      <div class="kicker">An online gallery</div>
-      <h1>A quiet return to the canvas.</h1>
-      <p class="lead">After many years away from painting, I picked up a brush again at the age of sixty. This website is a diary of that return — and a step toward a dream: to one day exhibit my work somewhere in the world.</p>
-      <div class="quiet-note">Scroll to enter the gallery</div>
-    </section>
+  <main id="main"></main>
 
-    <section id="works" class="gallery-room">
-      <div class="art-frame wide">Painting Image 01</div>
-      <div class="work-meta">
-        <div>Monsoon Evening <span>2026 · Acrylic on Canvas</span></div>
-        <a class="inquire" href="#contact">Inquire →</a>
-      </div>
-    </section>
+  <footer>© <span id="year"></span> 流光拾影 · 摄影 刘</footer>
 
-    <section class="gallery-room">
-      <div class="art-frame tall warm">Painting Image 02</div>
-      <div class="work-meta">
-        <div>Memory of Light <span>2026 · Watercolor</span></div>
-        <a class="inquire" href="#contact">Inquire →</a>
-      </div>
-    </section>
+<script>
+  /* =========================================================
+     分区与照片 / SECTIONS & PHOTOS
+     每个分区：zh 中文标题 · en 英文小字 · photos 文件名列表
+     文件名要和实际文件完全一致（注意大小写：.JPG 和 .jpg 不同）。
+     ========================================================= */
+  const SECTIONS = [
+    { id: "nature", zh: "自然", en: "Nature",   photos: ["images/nature_001.JPG", "images/nature_002.JPG"] },
+    { id: "flower", zh: "繁花", en: "Flowers",  photos: ["images/flower_001.JPG", "images/flower_002.JPG", "images/flower_003.JPG", "images/flower_004.JPG", "images/flower_005.JPG"] },
+    { id: "city",   zh: "城市", en: "City",     photos: ["images/city_001.JPG", "images/city_002.JPG", "images/city_003.JPG"] },
+    { id: "animal", zh: "小动物", en: "Animals",  photos: ["images/animal_001.JPG"] },
+    { id: "food",   zh: "美食",   en: "Homemade", photos: ["images/food_001.JPG", "images/food_002.JPG"] },
+  ];
+  /* ========================================================= */
 
-    <section class="gallery-room">
-      <div class="art-frame dark">Painting Image 03</div>
-      <div class="work-meta">
-        <div>Stillness After Work <span>2026 · Oil on Canvas</span></div>
-        <a class="inquire" href="#contact">Inquire →</a>
-      </div>
-    </section>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const main = document.getElementById("main");
+  const sectnav = document.getElementById("sectnav");
 
-    <section class="gallery-room">
-      <div class="art-frame blue wide">Painting Image 04</div>
-      <div class="work-meta">
-        <div>Blue Window <span>2026 · Mixed Media</span></div>
-        <a class="inquire" href="#contact">Inquire →</a>
-      </div>
-    </section>
+  SECTIONS.forEach(sec => {
+    // 导航
+    const link = document.createElement("a");
+    link.href = "#" + sec.id;
+    link.textContent = sec.zh;
+    link.dataset.id = sec.id;
+    sectnav.appendChild(link);
 
-    <section id="diary" class="gallery-room">
-      <h2>Diary</h2>
-      <article class="diary-entry">
-        <div class="date">June 2026</div>
-        <p>Today I worked on the sky again. I painted over the same corner three times before the light began to feel right.</p>
-        <div class="small-image"></div>
-      </article>
-      <article class="diary-entry">
-        <div class="date">July 2026</div>
-        <p>Started a landscape from memory. Some places stay with us even when we have not seen them for years.</p>
-        <div class="small-image"></div>
-      </article>
-    </section>
+    // 分区
+    const section = document.createElement("section");
+    section.className = "section";
+    section.id = sec.id;
 
-    <section id="dream" class="gallery-room">
-      <h2>The Dream</h2>
-      <div class="section-text">
-        <p>For many years, painting waited quietly.</p>
-        <p>Life became busy. Work came first. Family came first. Time moved on.</p>
-        <p>At sixty years old, I picked up a brush again.</p>
-        <p>My hope is simple: to continue painting, to share my work, to teach those who wish to learn, and one day to hold an exhibition somewhere in the world.</p>
-      </div>
-      <div class="timeline">
-        <div class="timeline-row"><span>✓</span><div>Returned to painting</div></div>
-        <div class="timeline-row"><span>✓</span><div>Created an online gallery</div></div>
-        <div class="timeline-row"><span>□</span><div>First local exhibition</div></div>
-        <div class="timeline-row"><span>□</span><div>Group exhibition</div></div>
-        <div class="timeline-row"><span>□</span><div>International exhibition</div></div>
-      </div>
-    </section>
+    const head = document.createElement("div");
+    head.className = "section-head";
+    head.innerHTML = "<h2>" + sec.zh + "</h2><span class='en'>" + sec.en + "</span>";
+    section.appendChild(head);
 
-    <section id="learn" class="gallery-room">
-      <h2>Learn</h2>
-      <div class="section-text">
-        <p>I am still learning, experimenting, and growing as an artist. If you would like to paint with me, I would be happy to share what I have learned.</p>
-      </div>
-      <div class="simple-list">
-        <div>Private Lessons <span>Drawing · Watercolor · Painting</span></div>
-        <div>For Beginners <span>Slow, patient, personal</span></div>
-        <div>Online or In Person <span>Contact to inquire</span></div>
-      </div>
-    </section>
+    section.appendChild(buildCarousel(sec));
+    main.appendChild(section);
+  });
 
-    <section id="contact" class="gallery-room">
-      <div class="contact-grid">
-        <div>
-          <h2>Contact</h2>
-          <div class="section-text">
-            <p>For artwork inquiries, lessons, exhibitions, or messages from the studio.</p>
-          </div>
-          <p style="max-width:520px;color:#777;margin-top:28px;">If someone wishes to receive a painting, the artwork may be gifted or discussed personally. The collector pays shipping charges.</p>
-        </div>
-        <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
-          <input name="name" placeholder="Name" required>
-          <input name="email" placeholder="Email" type="email" required>
-          <input name="country" placeholder="Country">
-          <textarea name="message" placeholder="Message"></textarea>
-          <button type="submit">Send Inquiry</button>
-        </form>
-      </div>
-    </section>
-  </main>
+  function buildCarousel(sec) {
+    const stage = document.createElement("div");
+    stage.className = "stage";
 
-  <footer>
-    <div>It is never too late to begin again.</div>
-    <div class="socials">
-      <a href="#">Instagram</a>
-      <a href="#">Facebook</a>
-      <a href="#">LinkedIn</a>
-      <a href="#">TikTok</a>
-      <a href="#">YouTube</a>
-      <a href="mailto:your-email@example.com">Email</a>
-    </div>
-  </footer>
+    const car = document.createElement("div");
+    car.className = "carousel";
+    sec.photos.forEach(src => {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = sec.zh;
+      img.loading = "lazy";
+      img.addEventListener("load", () => img.classList.add("loaded"));
+      slide.appendChild(img);
+      car.appendChild(slide);
+    });
+    stage.appendChild(car);
+
+    const prev = document.createElement("button");
+    prev.className = "arrow prev"; prev.innerHTML = "&#8249;"; prev.setAttribute("aria-label", "上一张");
+    const next = document.createElement("button");
+    next.className = "arrow next"; next.innerHTML = "&#8250;"; next.setAttribute("aria-label", "下一张");
+    stage.appendChild(prev); stage.appendChild(next);
+
+    const dots = document.createElement("div");
+    dots.className = "dots";
+    sec.photos.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      d.setAttribute("aria-label", "第 " + (i + 1) + " 张");
+      dots.appendChild(d);
+    });
+
+    const wrap = document.createElement("div");
+    wrap.appendChild(stage);
+    wrap.appendChild(dots);
+
+    let current = 0;
+    const dotEls = Array.from(dots.children);
+    function goTo(i) {
+      current = Math.max(0, Math.min(sec.photos.length - 1, i));
+      car.scrollTo({ left: current * car.clientWidth, behavior: "smooth" });
+      sync();
+    }
+    function sync() { dotEls.forEach((d, i) => d.classList.toggle("active", i === current)); }
+    dotEls.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
+    prev.addEventListener("click", () => goTo(current - 1));
+    next.addEventListener("click", () => goTo(current + 1));
+    let raf = null;
+    car.addEventListener("scroll", () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const i = Math.round(car.scrollLeft / car.clientWidth);
+        if (i !== current) { current = i; sync(); }
+        raf = null;
+      });
+    });
+    window.addEventListener("resize", () => { car.scrollLeft = current * car.clientWidth; });
+
+    if (sec.photos.length <= 1) {
+      dots.style.display = "none";
+      prev.style.display = "none";
+      next.style.display = "none";
+    }
+    return wrap;
+  }
+
+  /* 滚动时高亮当前分区 */
+  const links = Array.from(sectnav.children);
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.toggle("active", l.dataset.id === e.target.id));
+      }
+    });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  SECTIONS.forEach(sec => obs.observe(document.getElementById(sec.id)));
+</script>
 </body>
 </html>
