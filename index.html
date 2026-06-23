@@ -16,6 +16,7 @@
       --sans: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
               -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --serif: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
+      --title: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif;
       --bar: 56px;
     }
 
@@ -48,7 +49,7 @@
       border-bottom: 1px solid var(--line);
     }
     .brand {
-      font-family: var(--serif);
+      font-family: var(--title);
       font-size: 17px;
       font-weight: 500;
       letter-spacing: 0.24em;
@@ -88,7 +89,7 @@
       padding: var(--bar) 24px 0;
     }
     .intro .big {
-      font-family: var(--serif);
+      font-family: var(--title);
       font-size: clamp(26px, 4.6vw, 38px);
       font-weight: 500;
       letter-spacing: 0.36em;
@@ -137,23 +138,21 @@
 
     /* ---------- 轮播（一次一张，左右滑动） ---------- */
     .stage { position: relative; }
-    .carousel {
+    .viewport {
       height: 80vh;
       min-height: 380px;
-      display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      touch-action: pan-x;
+      overflow: hidden;
+      touch-action: pan-y;   /* 纵向交给页面滚动，横向由脚本处理 */
     }
-    .carousel::-webkit-scrollbar { display: none; }
+    .track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.45s cubic-bezier(.2,.7,.2,1);
+      will-change: transform;
+    }
     .slide {
       flex: 0 0 100%;
       height: 100%;
-      scroll-snap-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -223,7 +222,7 @@
     @media (max-width: 600px) {
       .brand { font-size: 15px; letter-spacing: 0.14em; }
       .sectnav a { font-size: 12px; padding: 6px 6px; }
-      .carousel { height: 72vh; }
+      .viewport { height: 72vh; }
       .slide { padding: 0 10px; }
     }
   </style>
@@ -287,11 +286,14 @@
   });
 
   function buildCarousel(sec) {
+    const n = sec.photos.length;
     const stage = document.createElement("div");
     stage.className = "stage";
 
-    const car = document.createElement("div");
-    car.className = "carousel";
+    const viewport = document.createElement("div");
+    viewport.className = "viewport";
+    const track = document.createElement("div");
+    track.className = "track";
     sec.photos.forEach(src => {
       const slide = document.createElement("div");
       slide.className = "slide";
@@ -301,9 +303,10 @@
       img.loading = "lazy";
       img.addEventListener("load", () => img.classList.add("loaded"));
       slide.appendChild(img);
-      car.appendChild(slide);
+      track.appendChild(slide);
     });
-    stage.appendChild(car);
+    viewport.appendChild(track);
+    stage.appendChild(viewport);
 
     const prev = document.createElement("button");
     prev.className = "arrow prev"; prev.innerHTML = "&#8249;"; prev.setAttribute("aria-label", "上一张");
@@ -326,27 +329,63 @@
 
     let current = 0;
     const dotEls = Array.from(dots.children);
-    function goTo(i) {
-      current = Math.max(0, Math.min(sec.photos.length - 1, i));
-      car.scrollTo({ left: current * car.clientWidth, behavior: "smooth" });
-      sync();
+
+    function render(offsetPx) {
+      const base = -current * 100;
+      track.style.transform = offsetPx
+        ? "translateX(calc(" + base + "% + " + offsetPx + "px))"
+        : "translateX(" + base + "%)";
     }
-    function sync() { dotEls.forEach((d, i) => d.classList.toggle("active", i === current)); }
+    function goTo(i) {
+      current = Math.max(0, Math.min(n - 1, i));
+      track.style.transition = "";
+      render(0);
+      dotEls.forEach((d, k) => d.classList.toggle("active", k === current));
+    }
     dotEls.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
     prev.addEventListener("click", () => goTo(current - 1));
     next.addEventListener("click", () => goTo(current + 1));
-    let raf = null;
-    car.addEventListener("scroll", () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        const i = Math.round(car.scrollLeft / car.clientWidth);
-        if (i !== current) { current = i; sync(); }
-        raf = null;
-      });
-    });
-    window.addEventListener("resize", () => { car.scrollLeft = current * car.clientWidth; });
 
-    if (sec.photos.length <= 1) {
+    // 触摸：横向滑动切换照片，纵向手势交给页面正常滚动
+    let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, decided = false, horiz = false;
+    viewport.addEventListener("touchstart", e => {
+      if (n <= 1) return;
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      dx = dy = 0; dragging = true; decided = false; horiz = false;
+      track.style.transition = "none";
+    }, { passive: true });
+    viewport.addEventListener("touchmove", e => {
+      if (!dragging) return;
+      const t = e.touches[0];
+      dx = t.clientX - startX; dy = t.clientY - startY;
+      if (!decided && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+        decided = true;
+        horiz = Math.abs(dx) > Math.abs(dy);
+      }
+      if (horiz) render(dx);   // 跟手拖动
+    }, { passive: true });
+    viewport.addEventListener("touchend", () => {
+      if (!dragging) return;
+      dragging = false;
+      track.style.transition = "";
+      if (horiz) {
+        const threshold = viewport.clientWidth * 0.16;
+        if (dx <= -threshold) goTo(current + 1);
+        else if (dx >= threshold) goTo(current - 1);
+        else goTo(current);
+      }
+    });
+
+    document.addEventListener("keydown", e => {
+      // 仅当该轮播在视口中时响应方向键
+      const r = viewport.getBoundingClientRect();
+      if (r.top > window.innerHeight || r.bottom < 0) return;
+      if (e.key === "ArrowRight") goTo(current + 1);
+      if (e.key === "ArrowLeft")  goTo(current - 1);
+    });
+
+    if (n <= 1) {
       dots.style.display = "none";
       prev.style.display = "none";
       next.style.display = "none";
